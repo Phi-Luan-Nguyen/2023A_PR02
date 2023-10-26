@@ -1,0 +1,16 @@
+# Pokemons constants
+MAX_HEALTH = 1000
+
+# States constants
+BURN_DAMAGE = 80
+POISON_DAMAGE = 40
+BURN_PROBABILITY = 0.2
+POISON_PROBABILITY = 0.2
+FREEZE_PROBABILITY = 0.15
+
+# Delay in seconds
+DELAY_GAME_START = 5
+DELAY_TURN = 2
+
+# Main
+MAIN_SEPARATOR = "\n"

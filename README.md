@@ -4,7 +4,7 @@
   - [Directives particulières](#directives-particulières)
   - [Introduction](#introduction)
   - [Objectifs](#objectifs)
-  - [Partie 1: Analyse de Pokédex](#partie-1-analyse-de-pokédex)
+  - [Partie 1: Analyse d'un Pokédex](#partie-1-analyse-dun-pokédex)
     - [Préparation du dataset 🧹](#préparation-du-dataset-)
       - [1.0 Chargement des données](#10-chargement-des-données)
       - [1.1 Suppression des colonnes non pertinentes](#11-suppression-des-colonnes-non-pertinentes)
@@ -28,6 +28,26 @@
         - [1.11.4 evaluate\_model(model, x\_test, y\_test)](#1114-evaluate_modelmodel-x_test-y_test)
         - [1.11.5 predict\_legendary(df)](#1115-predict_legendarydf)
   - [Partie 2: L'Arène des Pokémons](#partie-2-larène-des-pokémons)
+    - [Vue d'ensemble](#vue-densemble)
+    - [2.1 Création de la classe abstraite `Pokemon`](#21-création-de-la-classe-abstraite-pokemon)
+      - [2.1.1 Abstraction](#211-abstraction)
+      - [2.1.2 Constructeur](#212-constructeur)
+      - [2.1.3 Les propriétés en lecture (getters)](#213-les-propriétés-en-lecture-getters)
+      - [2.1.4 Les propriétés en écriture (setters)](#214-les-propriétés-en-écriture-setters)
+      - [2.1.5 Méthodes abstraites](#215-méthodes-abstraites)
+      - [2.1.6 Méthodes concrètes](#216-méthodes-concrètes)
+      - [2.1.7 Méthodes magiques](#217-méthodes-magiques)
+    - [2.2 Création des classes abstraites `PokemonType`](#22-création-des-classes-abstraites-pokemontype)
+      - [2.2.1 Héritage et Abstraction](#221-héritage-et-abstraction)
+      - [2.2.2 Constructeur](#222-constructeur)
+      - [2.2.3 Implémentation de `get_attack_multiplier`](#223-implémentation-de-get_attack_multiplier)
+    - [2.3 Le Triptyque: Squirtle, Charmander et Bulbasaur](#23-le-triptyque-squirtle-charmander-et-bulbasaur)
+      - [2.3.1 Héritage](#231-héritage)
+      - [2.3.2 Constructeur](#232-constructeur)
+      - [2.3.3 Implémentation de `evolve`](#233-implémentation-de-evolve)
+      - [2.3.4 Implémentation de `get_signature_sound` 🎶](#234-implémentation-de-get_signature_sound-)
+    - [2.4 Complétion de la classe `PokemonArena`](#24-complétion-de-la-classe-pokemonarena)
+    - [2.5 Création du script principal](#25-création-du-script-principal)
   - [Annexe: Guide et normes de codage](#annexe-guide-et-normes-de-codage)
 
 <!-- :alarm_clock: [Date de remise le Dimanche 22 novembre 23h59](https://www.timeanddate.com/countdown/generic?iso=20201122T235959&p0=165&msg=Remise+TP5&font=cursive) -->
@@ -49,7 +69,7 @@
 - Appliquer des méthodes de filtrage, de tri et d'agrégation sur des ensembles de données
 - Comprendre et appliquer les concepts de la programmation orientée objet
 
-## Partie 1: Analyse de Pokédex
+## Partie 1: Analyse d'un Pokédex
 Dans cette première étape de notre aventure, nous allons explorer les données disponibles dans un Pokédex. Un Pokédex, pour ceux qui ne sont pas familiers avec le terme, est un appareil électronique de poche que les dresseurs de Pokémon portent avec eux pour garder des informations sur toutes les différentes espèces de Pokémon. Pour cette analyse, nous utiliserons un dataset publiquement disponible sur [Kaggle](https://www.kaggle.com/datasets/rounakbanik/pokemon). Ce dataset a été légèrement modifié pour les besoins de ce projet. Il contient divers attributs sur chaque Pokémon, tels que leur type, leur génération, et bien sûr, leurs statistiques de combat. Nous allons employer différentes techniques de visualisation et d'analyse de données pour obtenir des insights intéressants sur ces créatures fascinantes.
 
 ### Préparation du dataset 🧹
@@ -165,11 +185,11 @@ Dans cette section, vous allez déployer vos compétences en machine learning po
 
 ##### 1.11.1 split_data(df)
 
-La première étape dans tout pipeline d'apprentissage automatique est la division du jeu de données en ensembles d'entraînement et de test. Cette fonction déjà donnée divise le DataFrame en deux ensembles : un ensemble d'entraînement et un ensemble de test.
+La première étape dans tout pipeline d'apprentissage automatique est la division du jeu de données en ensembles d'entraînement et de tests. Cette fonction déjà donnée divise le DataFrame en deux ensembles : un ensemble d'entraînement et un ensemble de tests.
 
 ##### 1.11.2 normalize_data(x_train, x_test)
 
-La mise à l'échelle des données est cruciale lors de l'utilisation de modèles qui sont sensibles à la magnitude des entrées. Cette fonction normalise les caractéristiques d'entraînement et de test. Pour ce faire, vous utiliserez la classe [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) de Scikit-Learn. L'objectif est de centrer les données autour de 0 et de les mettre à l'échelle pour avoir une variance unitaire. Les méthodes [fit_transform](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.fit_transform) et [transform](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.transform) de la classe StandardScaler vous seront utiles respectivement pour l'ensemble d'entraînement et l'ensemble de test. Cette fonction retournera les ensembles d'entraînement et de test normalisés.
+La mise à l'échelle des données est cruciale lors de l'utilisation de modèles qui sont sensibles à la magnitude des entrées. Cette fonction normalise les caractéristiques d'entraînement et de tests. Pour ce faire, vous utiliserez la classe [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) de Scikit-Learn. L'objectif est de centrer les données autour de 0 et de les mettre à l'échelle pour avoir une variance unitaire. Les méthodes [fit_transform](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.fit_transform) et [transform](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.transform) de la classe StandardScaler vous seront utiles respectivement pour l'ensemble d'entraînement et l'ensemble de tests. Cette fonction retournera les ensembles d'entraînement et de tests normalisés.
 
 ##### 1.11.3 train_model(x_train, y_train)
 
@@ -177,16 +197,16 @@ Après la préparation des données, il est temps d'entraîner le modèle. Cette
 
 ##### 1.11.4 evaluate_model(model, x_test, y_test)
 
-Une fois le modèle formé, l'étape suivante est de le tester sur les données que le modèle n'a jamais vues. Cette fonction évalue les performances du modèle sur l'ensemble de test. Pour ce faire, vous utiliserez la méthode [predict](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier.predict) de la classe KNeighborsClassifier pour prédire les labels de l'ensemble de test et la fonction [accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) de pour calculer la précision du modèle, qui sera retournée par la fonction.
+Une fois le modèle formé, l'étape suivante est de le tester sur les données que le modèle n'a jamais vues. Cette fonction évalue les performances du modèle sur l'ensemble de tests. Pour ce faire, vous utiliserez la méthode [predict](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier.predict) de la classe KNeighborsClassifier pour prédire les labels de l'ensemble de tests et la fonction [accuracy_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) de pour calculer la précision du modèle, qui sera retournée par la fonction.
 
 ##### 1.11.5 predict_legendary(df)
 
 Cette fonction agit comme coordinateur, orchestrant l'exécution de toutes les fonctions ci-dessus. Elle est également responsable de l'impression de la précision du modèle. Voici les étapes à suivre pour compléter cette fonction :
-- Divisez le DataFrame en ensembles d'entraînement et de test en appelant la fonction `split_data(df)`.
-- Normalisez les ensembles d'entraînement et de test en appelant la fonction `normalize_data(x_train, x_test)`.
+- Divisez le DataFrame en ensembles d'entraînement et de tests en appelant la fonction `split_data(df)`.
+- Normalisez les ensembles d'entraînement et de tests en appelant la fonction `normalize_data(x_train, x_test)`.
 - Utilisez les ensembles d'entraînement normalisés pour entraîner le modèle en appelant la fonction `train_model(x_train, y_train)`.
-- Utilisez le modèle entraîné pour évaluer les performances sur l'ensemble de test en appelant la fonction `evaluate_model(model, x_test, y_test)`.
-- Affichez le nombre de données d'entraînement et de test.
+- Utilisez le modèle entraîné pour évaluer les performances sur l'ensemble de tests en appelant la fonction `evaluate_model(model, x_test, y_test)`.
+- Affichez le nombre de données d'entraînement et de tests.
 - Affichez la précision du modèle.
 
 **Afficahge attendu:**
@@ -197,12 +217,226 @@ Cette fonction agit comme coordinateur, orchestrant l'exécution de toutes les f
 
 ## Partie 2: L'Arène des Pokémons
 
-Dans cette deuxième section du TP, nous changeons de cap et plongeons dans le monde passionant de la programmation orientée objet. Vous aurez la tâche de créer une simulation de combat entre Pokémon, tour par tour, en utilisant la puissante de la POO. Vous allez créer plusieurs classes, notamment une classe abstraite `Pokemon` pour représenter un Pokémon avec toutes ses caractéristiques, d'autres classes abstraites pour représenter les différents types de Pokémon, et enfin des classes concrètes pour représenter les Pokémon eux-mêmes. Vous allez également créer une classe `PokemonBattle` pour orchestrer les duels.
+Dans cette deuxième section du TP, nous changeons de cap et plongeons dans le monde passionant de la programmation orientée objet. Vous aurez la tâche de créer une simulation de combat tour par tour entre Pokémon, en utilisant la puissante de la POO.
 
 Ce segment a donc pour but de vous familiariser avec les concepts de base de la POO en Python en mettant l'accent sur l'encapsulation, l'héritage, et le polymorphisme.
 
 Préparez-vous à entrer dans l'arène! 🏟️
 
+### Vue d'ensemble
+
+Tout d'abord, vous développerez une classe abstraite `Pokemon` pour les caractéristiques communes à tous les Pokémon. Ensuite, vous développerez des sous-classes abstraites `PokemonType` pour trois différents types de Pokémon. Ces classes seront des enfants de la classe `Pokemon` et définiront des caractéristiques communes des Pokémon de ce type. Puis, vous développerez une sous-classe concrète représentant un Pokémon spécifique pour chaque type.
+
+Par la suite, vous compléterez deux fonctions de la classe `PokemonArena` utilisant le polymorphisme des pokémons pour simuler un combat entre deux Pokémon.
+
+Finalement, vous écrirez un simple script principal pour tester le fonctionnement de votre code précédemment écrit.
+
+### 2.1 Création de la classe abstraite `Pokemon`
+
+Cette classe est la pierre angulaire de notre simulation. Elle représente les caractéristiques communes à tous les Pokémon. Vous devez compléter la classe `Pokemon` en suivant les directives suivantes:
+
+#### 2.1.1 Abstraction
+
+Pour commencer, vous devez rendre la classe `Pokemon` abstraite afin qu'elle ne puisse pas être instanciée directement.
+
+Conseil: Allez voir la documentation de la librairie [abc](https://docs.python.org/3/library/abc.html).
+
+#### 2.1.2 Constructeur
+
+La méthode `__init__` est le constructeur de la classe. Elle est appelée lorsqu'une instance de la classe est créée. Vous devez compléter le constructeur de la classe `Pokemon`.
+
+- Le constructeur doit prendre les paramètres suivants:
+  - `name`: le nom du Pokémon
+  - `attack`: l'attaque du Pokémon
+  - `defense`: la défense du Pokémon
+  - `type`: le type du Pokémon
+
+Lors de cette initialisation, vous devez garder en mémoire les paramètres dans des attributs privés utilisant la convention du double underscore (ex: `name` devient `__name`). Vous devez également initialiser les attributs suivants:
+
+- `__health`: la santé du Pokémon. Elle doit être initialisée à la valeur maximale de santé (voir la constante `MAX_HEALTH` dans le fichier `constants.py`).
+- `__state`: l'état du Pokémon. Elle doit être initialisée à `NORMAL`.
+- `__state_counter`: le compteur d'état du Pokémon. Il sera utilisé pour compter le nombre de tours restants d'un état induit (ex: empoisonné). Il doit être initialisé à 0.
+- `__evolved`: un booléen indiquant si le Pokémon a évolué. Il doit être initialisé à `False`.
+
+#### 2.1.3 Les propriétés en lecture (getters)
+
+Les propriétés en lecture permettent d'accéder aux attributs privés d'un objet. Les getters sont souvent utilisés pour obtenir les valeurs des attributs sans les exposer directement. Vous devez utiliser le décorateur [@property](https://docs.python.org/3/library/functions.html#property) pour la définition de chaque getter.
+
+Voici la liste des getters à implémenter:
+
+- `name`: retourne le nom du Pokémon (string)
+- `attack`: retourne l'attaque du Pokémon (int)
+- `defense`: retourne la défense du Pokémon (int)
+- `type`: retourne le type du Pokémon (PokemonType)
+- `health`: retourne la santé du Pokémon (int)
+- `state`: retourne l'état du Pokémon (PokemonState)
+- `state_counter`: retourne le compteur d'état du Pokémon (int)
+- `evolved`: retourne un booléen indiquant si le Pokémon a évolué (bool)
+
+#### 2.1.4 Les propriétés en écriture (setters)
+
+Les propriétés en écriture permettent de modifier les attributs privés d'un objet et de valider les valeurs données avant leur modification. Vous devez utiliser le décorateur [@attributename.setter](https://docs.python.org/3/library/functions.html#property) pour la définition de chaque setter. Vous devez également valider les valeurs données avant de les assigner aux attributs privés de l'objet.
+
+Voici la liste des setters à implémenter:
+
+- `name`: prend un nom en paramètre et assigne le nom à l'attribut `__name` seulement si le nom n'est pas une chaîne vide.
+- `attack`: prend une attaque en paramètre et assigne l'attaque à l'attribut `__attack` seulement si l'attaque est supérieure ou égale à 0.
+- `defense`: prend une défense en paramètre et assigne la défense à l'attribut `__defense` seulement si la défense est supérieure ou égale à 0.
+- `state`: prend un état en paramètre et assigne l'état à l'attribut `__state` seulement si l'état est un membre de l'énumération `PokemonState`.
+- `state_counter`: prend un compteur d'état en paramètre et assigne le compteur d'état à l'attribut `__state_counter` seulement si la valeur est supérieure ou égale à 0.
+
+#### 2.1.5 Méthodes abstraites
+
+Les méthodes abstraites sont des méthodes qui ne sont pas implémentées dans la classe abstraite, mais qui doivent être obligatoirement être implémentées dans les sous-classes. Vous devez utiliser le décorateur [@abstractmethod](https://docs.python.org/3/library/abc.html#abc.abstractmethod) pour la définition de chaque méthode abstraite.
+
+Voici la liste des méthodes abstraites à implémenter:
+
+- a) `get_attack_multiplier`: prend un type de Pokémon en paramètre et retourne le multiplicateur d'attaque (double) du Pokémon en fonction du type du Pokémon attaqué (passé en paramètre). Cette méthode sera implémentée dans les sous-classes de `Pokemon`.
+- b) `generate_random_induced_state`: retourne un tuple contenant un état induit aléatoirement (PokemonState) et le nombre de tours restants de l'état induit (int). Cette méthode sert à générer un état induit aléatoire lorsqu'un Pokémon attaque un autre Pokémon et sera implémentée dans les sous-classes de `Pokemon`.
+- c) `get_signature_sound`: retourne le son de signature du Pokémon (string). Cette méthode sera implémentée dans les sous-classes de `PokemonType`.
+- d) `evolve`: cette méthode ne reçoit aucun paramètre et ne retourne rien. Elle permet d'évoluer le Pokémon. Cette méthode sera implémentée dans les sous-classes de `PokemonType`.
+
+#### 2.1.6 Méthodes concrètes
+
+Les méthodes concrètes sont des méthodes qui sont implémentées dans la classe abstraite et qui peuvent être utilisées directement par les sous-classes. Vous devez implémenter les méthodes suivantes:
+
+- a) `decrement_state_counter`: cette fonction ne reçoit aucun paramètre et ne retourne rien. Elle décrémente le compteur d'état du Pokémon de 1. Si le compteur d'état est déjà à 0, la fonction ne fait rien.
+- b) `is_knocked_out`: cette fonction ne reçoit aucun paramètre et retourne un booléen indiquant si le Pokémon est KO (True) ou non (False). Un Pokémon est KO si sa santé est à 0.
+- c) `heal`: cette fonction ne reçoit aucun paramètre et ne retourne rien. Elle remet la santé du Pokémon à la valeur maximale de santé (voir la constante `MAX_HEALTH` dans le fichier `constants.py`).
+
+#### 2.1.7 Méthodes magiques
+
+Les méthodes magiques sont des méthodes spéciales ayant des noms spécifiques (ex: `__init__`, `__str__`, `__repr__`, etc.) qui permettent de modifier le comportement de l'objet. 
+
+Nous allons les utiliser pour surcharger des opérateurs spécifiques ("+" et "-") ou lorsqu'on tente d'interpréter l'objet comme une chaîne de caractères (via `str(...)`, `print(...)`, etc.).
+
+**a) def __str\__(self):**
+Cette méthode spéciale est appelée lorsqu'on tente d'interpréter l'objet comme une chaîne de caractères (ex: `str(pokemon)` ou `print(pokemon)`). Elle retourne une chaîne de caractères représentant le Pokémon. 
+ 
+La chaîne de caractères doit être de la forme suivante: 
+ `<name> est de type <type>. Il a <attack> points d'attaque et <defense> points de défense.`. 
+
+**b) def __add\__(self, health: int):**
+Cette méthode spéciale est appelée lorsqu'on tente d'ajouter un nombre à un Pokémon (ex: `pokemon + 10`). Elle ne retourne rien. Elle doit ajouter la valeur passée en paramètre à la santé du Pokémon. Si la valeur passée en paramètre est négative, la fonction ne fait rien. La santé du Pokémon ne peut pas dépasser la valeur maximale de santé (voir la constante `MAX_HEALTH` dans le fichier `constants.py`).
+
+**c) def __sub\__(self, damage: int):**
+Cette méthode spéciale est appelée lorsqu'on tente de soustraire un nombre à un Pokémon (ex: `pokemon - 10`). Elle ne retourne rien. Elle doit soustraire la valeur passée en paramètre à la santé du Pokémon. Si la valeur passée en paramètre est négative, la fonction ne fait rien. La santé du Pokémon ne peut pas être négative.
+
+### 2.2 Création des classes abstraites `PokemonType`
+
+Les classes abstraites `PokemonTypeWater`, `PokemonTypeFire` et `PokemonTypeGrass` représentent les caractéristiques communes à tous les Pokémon de leur type.
+
+#### 2.2.1 Héritage et Abstraction
+
+Pour commencer, vous devez faire hériter les trois classes de la classe abstraite `Pokemon`. Vous devez également rendre les trois classes abstraites afin qu'elles ne puissent pas être instanciées directement. 
+
+#### 2.2.2 Constructeur
+
+Le constructeur des trois classes doit prendre les paramètres suivants:
+
+- `name`: le nom du Pokémon
+- `attack`: l'attaque du Pokémon
+- `defense`: la défense du Pokémon
+
+Vous devez absolument utiliser le constructeur de la classe parent pour garder en mémoire les différents paramètres. Chaque sous-classe devra donc donner le type qui lui correspond dans cet appel.
+
+Conseil: Voir la documentation de la librairie [super](https://docs.python.org/3/library/functions.html#super).
+
+#### 2.2.3 Implémentation de `get_attack_multiplier`
+
+Dans l'univers de Pokémon, la notion de type est très importante pour prédire l'issue d'un combat. Chaque type de Pokémon a des forces et des faiblesses contre d'autres types de Pokémon. Par exemple, un Pokémon de type **FEU** aura un avantage contre un Pokémon de type **PLANTE**. On peut dire que, contrairement au langage Python, le monde des Pokémon est fortement typé (sans mauvais jeu de mot 😉).
+
+Vous devez donc implémenter la méthode abstraite `get_attack_multiplier` dans les trois classes. Cette méthode retourne le multiplicateur d'attaque (double) du Pokémon en fonction du type du Pokémon attaqué (passé en paramètre).
+
+Voici les multiplicateurs d'attaque pour chaque type de Pokémon:
+
+- **Pour les pokémons de type FIRE**:
+  - GRASS: 1.25
+  - WATER: 0.75
+  - Autre: 1.0
+
+- **Pour les pokémons de type WATER**:
+  - FIRE: 1.25
+  - GRASS: 0.75
+  - Autre: 1.0
+
+- **Pour les pokémons de type GRASS**:
+  - WATER: 1.25
+  - FIRE: 0.75
+  - Autre: 1.0
+
+
+### 2.3 Le Triptyque: Squirtle, Charmander et Bulbasaur
+
+Les trois classes `Squirtle`, `Charmander` et `Bulbasaur` représentent les trois Pokémon de départ les plus emblématiques de cet univers. Chacun de ces Pokémon incarne un élément fondamental - Eau, Feu, et Plante - et possède la capacité fascinante d'évoluer, de gagner en puissance, et d'exprimer leur individualité à travers un son unique.
+
+#### 2.3.1 Héritage
+
+Les trois classes doivent hériter de la classe abstraite correspondant à leur type de Pokémon (`PokemonWaterType`, `PokemonFireType` et `PokemonGrassType`). Cet héritage permet une implémentation cohérente et propre des comportements spécifiques à chaque type.
+
+#### 2.3.2 Constructeur
+
+Le constructeur des trois classes ne prend aucun paramètre. Vous devez  utiliser le constructeur de la classe parent en lui donnant les caractéristiques spécifiques du Pokémon en question. Chaque constructeur ne doit donc pas dépasser une ligne de code.
+
+Voici les caractéristiques de base de chaque Pokémon:
+
+- **Squirtle**:
+  - Nom: Squirtle
+  - Attaque: 48
+  - Défense: 65
+
+- **Charmander**:
+  - Nom: Charmander
+  - Attaque: 52
+  - Défense: 43
+
+- **Bulbasaur**:
+  - Nom: Bulbasaur
+  - Attaque: 49
+  - Défense: 49
+
+#### 2.3.3 Implémentation de `evolve`
+
+Ce qui rend ces Pokémon particulièrement captivants, c'est leur capacité à évoluer et à monter en puissance. La méthode `evolve` assure cette transformation en modifiant les attributs d'attaque et de défense ainsi que le nom du Pokémon, reflétant ainsi son nouvel état évolutif. Elle ne prend aucun paramètre et ne retourne rien.
+
+Voici les caractéristiques de chaque Pokémon après son évolution:
+
+- **Squirtle**:
+  - Nom: Wartortle
+  - Attaque: 63
+  - Défense: 80
+
+- **Charmander**:
+  - Nom: Charmeleon
+  - Attaque: 64
+  - Défense: 58
+
+- **Bulbasaur**:
+  - Nom: Ivysaur
+  - Attaque: 62
+  - Défense: 63
+
+#### 2.3.4 Implémentation de `get_signature_sound` 🎶
+
+Chaque Pokémon exprime sa singularité à travers un son distinct. La méthode `get_signature_sound` nous gratifie de ces sonorités emblématiques. Elle ne prend aucun paramètre et retourne le son de signature du Pokémon (string).
+
+Voici les sons de signature de chaque Pokémon:
+
+- **Squirtle**: "Squirtle-squirtle"
+- **Charmander**: "Char-char"
+- **Bulbasaur**: "Bulba-bulba"
+
+### 2.4 Complétion de la classe `PokemonArena`
+
+La construction de l'arène de combat est presque achevée. La dernière brique à poser est l'implémentation de la méthode `attack` de la classe `PokemonArena`. Cette méthode prend deux paramètres: un Pokémon attaquant et un Pokémon défenseur. Elle calcule les dégâts infligés par l'attaquant au défenseur en fonction du multiplicateur de dégâts de l'attaquant et soustrait les dégâts aux points de vie du défenseur. La méthode doit retourner les dégâts infligés. 
+
+**Important**: Il est nécessaire d'utiliser la méthode `get_attack_multiplier` de la classe `Pokemon` pour calculer le multiplicateur de dégâts de l'attaquant et d'utiliser la surcharge de l'opérateur "-" pour soustraire les dégâts aux points de vie du défenseur.
+
+### 2.5 Création du script principal
+
+Vous êtes maintenant prêt à entrer dans l'arène et à vivre l'expérience ultime de la vie de dresseur/dresseuse de Pokémon! Dans ce script principal, nous allons tester tous les aspects de la dynamique entre les Pokémon, de leur tout premier combat jusqu'à leur forme évoluée.
+
+Il est donc temps de vous diriger vers le fichier [main.py](part2/main.py) et suivre les instructions TODO pour compléter votre aventure. Le combat final vous attend! ⭐️
 
 ## Annexe: Guide et normes de codage
 - [Le guide maison](https://github.com/INF1007-Gabarits/Guide-codage-python) de normes supplémentaires à respecter
