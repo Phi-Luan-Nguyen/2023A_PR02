@@ -166,6 +166,8 @@ Par la suite, vous compléterez une fonction de la classe `PokemonArena` utilisa
 
 Finalement, vous écrirez un simple script principal pour tester le fonctionnement de votre code précédemment écrit.
 
+![UML](/assets/UML-part2.png)
+
 ### 2.1 Création de la classe abstraite `Pokemon`
 
 Cette classe est la pierre angulaire de notre simulation. Elle représente les caractéristiques communes à tous les Pokémon. Vous devez compléter la classe `Pokemon` en suivant les directives suivantes:
@@ -233,9 +235,36 @@ Voici la liste des méthodes abstraites à implémenter:
 
 Les méthodes concrètes sont des méthodes qui sont implémentées dans la classe abstraite et qui peuvent être utilisées directement par les sous-classes. Vous devez implémenter les méthodes suivantes:
 
-- a) `decrement_state_counter`: cette fonction ne reçoit aucun paramètre et ne retourne rien. Elle décrémente le compteur d'état du Pokémon de 1. Si le compteur d'état est déjà à 0, la fonction ne fait rien. Pour rappel, le compteur d'état est utilisé pour compter le nombre de tours restants d'un état induit (ex: empoisonné);
-- b) `is_knocked_out`: cette fonction ne reçoit aucun paramètre et retourne un booléen indiquant si le Pokémon est KO (True) ou non (False). Un Pokémon est KO si sa santé est à 0.
-- c) `heal`: cette fonction ne reçoit aucun paramètre et ne retourne rien. Elle remet la santé du Pokémon à la valeur maximale de santé (voir la constante `MAX_HEALTH` dans le fichier `constants.py`).
+- a) **`decrement_state_counter`**: Cette fonction ne reçoit aucun paramètre et ne retourne rien. Elle décrémente le compteur d'état du Pokémon de 1. Si le compteur d'état est déjà à 0, la fonction ne fait rien. Pour rappel, le compteur d'état est utilisé pour compter le nombre de tours restants d'un état induit (ex: empoisonné).
+  
+  **Exemple d'utilisation:**
+  
+  ```python
+  print(pokemon.state_counter) # Retourne: 3
+  pokemon.decrement_state_counter()
+  print(pokemon.state_counter) # Retourne: 2
+  ```
+
+- b) **`is_knocked_out`**: Cette fonction ne reçoit aucun paramètre et retourne un booléen indiquant si le Pokémon est KO (True) ou non (False). Un Pokémon est KO si sa santé est à 0.
+  
+  **Exemple d'utilisation:**
+  
+  ```python
+  print(pokemon.health) # Retourne: 10
+  print(pokemon.is_knocked_out()) # Retourne: False
+  pokemon.health = 0
+  print(pokemon.is_knocked_out()) # Retourne: True
+  ```
+
+- c) **`heal`**: Cette fonction ne reçoit aucun paramètre et ne retourne rien. Elle remet la santé du Pokémon à la valeur maximale de santé (voir la constante `MAX_HEALTH` dans le fichier `constants.py`).
+  
+  **Exemple d'utilisation:**
+  
+  ```python
+  print(pokemon.health) # 5
+  pokemon.heal()
+  print(pokemon.health) # 1000
+  ```
 
 #### 2.1.7 Méthodes magiques
 
@@ -249,11 +278,34 @@ Cette méthode spéciale est appelée lorsqu'on tente d'interpréter l'objet com
 La chaîne de caractères doit être de la forme suivante: 
  `<name> est de type <type>. Il a <attack> points d'attaque et <defense> points de défense.`. 
 
+ **Exemple d'utilisation:**
+  
+  ```python
+  bulbasaur = Bulbasaur(...)
+  print(bulbasaur) # Retourne: Bulbasaur est de type GRASS. Il a 48 points d'attaque et 65 points de défense.
+  ```
+
 **b) def __add\__(self, health: int):**
 Cette méthode spéciale est appelée lorsqu'on tente d'ajouter un nombre à un Pokémon (ex: `pokemon + 10`). Elle ne retourne rien. Elle doit ajouter la valeur passée en paramètre à la santé du Pokémon. Si la valeur passée en paramètre est négative, la fonction ne fait rien. La santé du Pokémon ne peut pas dépasser la valeur maximale de santé (voir la constante `MAX_HEALTH` dans le fichier `constants.py`).
 
+**Exemple d'utilisation:**
+  
+  ```python
+  print(pokemon.health) # Retourne: 5
+  pokemon + 10
+  print(pokemon.health) # Retourne: 15
+  ```
+
 **c) def __sub\__(self, damage: int):**
 Cette méthode spéciale est appelée lorsqu'on tente de soustraire un nombre à un Pokémon (ex: `pokemon - 10`). Elle ne retourne rien. Elle doit soustraire la valeur passée en paramètre à la santé du Pokémon. Si la valeur passée en paramètre est négative, la fonction ne fait rien. La santé du Pokémon ne peut pas être négative.
+
+**Exemple d'utilisation:**
+  
+  ```python
+  print(pokemon.health) # Retourne: 25
+  pokemon - 10
+  print(pokemon.health) # Retourne: 15
+  ```
 
 ### 2.2 Création des classes abstraites `PokemonType`
 
@@ -297,6 +349,14 @@ Voici les multiplicateurs d'attaque pour chaque type de Pokémon:
   - FIRE: 0.75
   - Autre: 1.0
 
+**Exemple d'utilisation:**
+  
+  ```python
+  squirtle = Squirtle(...)
+  charmander = Charmander(...)
+  print(squirtle.get_attack_multiplier(charmander.type)) # Retourne: 1.25
+  print(charmander.get_attack_multiplier(squirtle.type)) # Retourne: 0.75
+  ```
 
 ### 2.3 Le Triptyque: `Squirtle`, `Charmander` et `Bulbasaur`
 
@@ -347,6 +407,20 @@ Voici les caractéristiques de chaque Pokémon après son évolution:
   - Nom: Ivysaur
   - Attaque: 62
   - Défense: 63
+  
+
+**Exemple d'utilisation:**
+    
+  ```python
+  bulbasaur = Bulbasaur(...)
+  print(bulbasaur.name) # Retourne: Bulbasaur
+  print(bulbasaur.attack) # Retourne: 49
+  print(bulbasaur.defense) # Retourne: 49
+  bulbasaur.evolve()
+  print(bulbasaur.name) # Retourne: Ivysaur
+  print(bulbasaur.attack) # Retourne: 62
+  print(bulbasaur.defense) # Retourne: 63
+  ```
 
 #### 2.3.4 Implémentation de `get_signature_sound` 🎶
 
@@ -358,9 +432,26 @@ Voici les sons de signature de chaque Pokémon:
 - **Charmander**: "Char-char"
 - **Bulbasaur**: "Bulba-bulba"
 
+**Exemple d'utilisation:**
+    
+```python
+charmander = Charmander(...)
+print(charmander.get_signature_sound()) # Retourne: Char-char
+```
+
 ### 2.4 Complétion de la classe `PokemonArena`
 
 La construction de l'arène de combat est presque achevée. La dernière brique à poser est l'implémentation de la méthode `attack` de la classe `PokemonArena`. Cette méthode prend deux paramètres: un Pokémon attaquant et un Pokémon défenseur. Elle calcule les dégâts infligés par l'attaquant au défenseur en fonction du multiplicateur de dégâts de l'attaquant et soustrait les dégâts aux points de vie du défenseur. La méthode doit retourner les dégâts infligés. 
+
+**Exemple d'utilisation:**
+    
+```python
+squirtle = Squirtle(...)
+charmander = Charmander(...)
+print(charmander.health) # Retourne: 1000
+PokemonArena.attack(squirtle, charmander) # Retourne: 60 (car 48 * 1.25 = 60)
+print(charmander.health) # Retourne: 940
+```
 
 **Important**: Il est nécessaire d'utiliser la méthode `get_attack_multiplier` de la classe `Pokemon` pour calculer le multiplicateur de dégâts de l'attaquant et d'utiliser la surcharge de l'opérateur "-" pour soustraire les dégâts aux points de vie du défenseur.
 
