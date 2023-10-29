@@ -4,7 +4,7 @@ import nbformat
 import pandas as pd
 
 FUNCTION_NAMES = ['create_pokedex', 'filter_columns',
-                  'rename_columns', 'clean_data', 'clean_columns_types']
+                  'rename_columns', 'clean_data', 'correct_columns_types']
 
 
 def import_notebook_functions(notebook_path, function_names):
@@ -72,11 +72,11 @@ class TestPokedexAnalysis(unittest.TestCase):
 
     # Note: Ce test ne fonctionnera que si vous avez bien implémenté les fonctions précédentes,
     # vu que la modification du type des colonnes se base sur les noms des colonnes renommées
-    def test_clean_columns_types(self):
+    def test_correct_columns_types(self):
         filter_columns(self.df)
         rename_columns(self.df)
         clean_data(self.df)
-        clean_columns_types(self.df)
+        correct_columns_types(self.df)
         self.assertEqual(self.df['Generation'].dtype, int)
         self.assertEqual(self.df["HP"].dtype, int)
         self.assertEqual(self.df["Speed"].dtype, int)
