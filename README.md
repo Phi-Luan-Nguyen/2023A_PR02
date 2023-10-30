@@ -30,7 +30,7 @@
   - [Barème](#barème)
   - [Annexe: Guide et normes de codage](#annexe-guide-et-normes-de-codage)
 
-<!-- :alarm_clock: [Date de remise le Dimanche 22 novembre 23h59](https://www.timeanddate.com/countdown/generic?iso=20201122T235959&p0=165&msg=Remise+TP5&font=cursive) -->
+:alarm_clock: Date de remise le Dimanche 26 novembre 23h59
 
 ## Directives particulières
 * Le fichier requirements.txt contient les librairies à installer pour faire le laboratoire;
