@@ -27,6 +27,7 @@
     - [2.3 Le Triptyque: `Squirtle`, `Charmander` et `Bulbasaur`](#23-le-triptyque-squirtle-charmander-et-bulbasaur)
     - [2.4 Complétion de la classe `PokemonArena`](#24-complétion-de-la-classe-pokemonarena)
     - [2.5 Création du script principal](#25-création-du-script-principal)
+  - [Barème](#barème)
   - [Annexe: Guide et normes de codage](#annexe-guide-et-normes-de-codage)
 
 <!-- :alarm_clock: [Date de remise le Dimanche 22 novembre 23h59](https://www.timeanddate.com/countdown/generic?iso=20201122T235959&p0=165&msg=Remise+TP5&font=cursive) -->
@@ -460,6 +461,39 @@ print(charmander.health) # Retourne: 940
 Vous êtes maintenant prêt à entrer dans l'arène et à vivre l'expérience ultime de la vie de dresseur/dresseuse de Pokémon! Dans ce script principal, nous allons tester tous les aspects de la dynamique entre les Pokémon, de leur tout premier combat jusqu'à leur forme évoluée.
 
 Il est donc temps de vous diriger vers le fichier [main.py](part2/main.py) et suivre les instructions TODO pour compléter votre aventure. Le combat final vous attend! ⭐️
+
+## Barème
+
+| Question | Points |
+| -------- | ------ |
+| 1.0      | 1      |
+| 1.1      | 3      |
+| 1.2      | 3      |
+| 1.3      | 3      |
+| 1.4      | 2      |
+| 1.5      | 5      |
+| 1.6      | 5      |
+| 1.7      | 7      |
+| 1.8      | 12     |
+| 1.9      | 6      |
+| 1.10     | 6      |
+| 2.1.1    | 1      |
+| 2.1.2    | 2      |
+| 2.1.3    | 3      |
+| 2.1.4    | 6      |
+| 2.1.5    | 2      |
+| 2.1.6    | 4      |
+| 2.1.7    | 6      |
+| 2.2.1    | 1      |
+| 2.2.2    | 2      |
+| 2.2.3    | 3      |
+| 2.3.1    | 1      |
+| 2.3.2    | 3      |
+| 2.3.3    | 3      |
+| 2.3.4    | 2      |
+| 2.4      | 3      |
+| 2.5      | 5      |
+| **Total**| **100**|
 
 ## Annexe: Guide et normes de codage
 - [Le guide maison](https://github.com/INF1007-Gabarits/Guide-codage-python) de normes supplémentaires à respecter
