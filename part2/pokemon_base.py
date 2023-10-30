@@ -27,15 +27,6 @@ class Pokemon():  # TODO: Rendez la classe Pokemon abstraite
 
     # TODO: Ajouter le "setter" state_counter, s'assurant de mettre à jour l'attribut uniquement si la valeur est positive
 
-    # TODO: Implémenter la méthode non-abstraite decrement_state_counter, qui décrémente l'attribut __state_counter de 1, à moins que
-    # sa valeur soit déjà à 0.
-
-    # TODO: Implémenter la méthode non-abstraite "is_knocked_out", qui ne prend aucun paramètre et qui retourne un booléen indiquant si le Pokémon est
-    # KO, c'est-à-dire si son attribut __health est à 0.)
-
-    # TODO: Implémenter la méthode non-abstraite "heal" qui ne prend aucun paramètre et qui ne retourne rien. Cette méthode
-    # met à jour l'attribut __health à MAX_HEALTH.
-
     # Pour les méthodes abstraites suivantes, vous devez vous assurer d'utiliser le décorateur "@abstractmethod".
 
     # TODO: Déclarer la signature de la méthode abstraite "get_attack_multiplier", qui prend en paramètre le type
@@ -50,6 +41,15 @@ class Pokemon():  # TODO: Rendez la classe Pokemon abstraite
     # TODO: Déclarer la signature de la méthode abstraite "evolve", qui ne prend aucun paramètre et qui ne retourne
     # rien.
 
+    # TODO: Implémenter la méthode non-abstraite decrement_state_counter, qui décrémente l'attribut __state_counter de 1, à moins que
+    # sa valeur soit déjà à 0.
+
+    # TODO: Implémenter la méthode non-abstraite "is_knocked_out", qui ne prend aucun paramètre et qui retourne un booléen indiquant si le Pokémon est
+    # KO, c'est-à-dire si son attribut __health est à 0.)
+
+    # TODO: Implémenter la méthode non-abstraite "heal" qui ne prend aucun paramètre et qui ne retourne rien. Cette méthode
+    # met à jour l'attribut __health à MAX_HEALTH.
+    
     # TODO: Implémenter la méthode spéciale __str__ qui retourne une chaîne de caractères décrivant le Pokémon, par
     # exemple: "Pikachu est de type ELECTRIC. Il a 112 points d'attaque et 96 points de défense."
     def __str__(self) -> str:
