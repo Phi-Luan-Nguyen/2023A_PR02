@@ -143,8 +143,7 @@ Quelques conseils:
 
 Dans cette section, nous allons plonger dans les relations intrinsèques entre les différentes statistiques des Pokémon. Une matrice de corrélation vous permettra de mesurer à quel point les statistiques sont interdépendantes. Cela donne une idée de la relation entre, par exemple, la vitesse et l'attaque d'un Pokémon : sont-ils généralement proportionnels ou indépendants?
 
-Utilisez la bibliothèque Seaborn pour générer la matrice de corrélation des statistiques suivantes: **Attack**, **Defense**, **HP**, **Special** **Attack**, **Special** **Defense**, **HP** et **Speed**. Utilisez la librairie **Seaborn** pour créer la matrice de corrélation.
-
+Utilisez la bibliothèque Seaborn pour générer la matrice de corrélation des statistiques suivantes: **Attack**, **Defense**, **HP**, **Special** **Attack**, **Special** **Defense**, **HP** et **Speed**.
 ![Q1.10](/assets/Q1.10.png)
 
 Quelques conseils:
