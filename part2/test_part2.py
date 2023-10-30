@@ -10,7 +10,7 @@ from constants import MAX_HEALTH
 from testing_constants import Stubs
 
 
-class ConcreteTypePokemonImpl():
+class ConcreteTypePokemonImpl:
     def get_signature_sound(self) -> str:
         return "No sound"
 
@@ -26,7 +26,7 @@ class ConcreteBasePokemonImpl(ConcreteTypePokemonImpl):
         return (None, None)
 
 
-class TestUtils():
+class TestUtils:
     @staticmethod
     def is_constructor_one_liner(pokemon_class: Pokemon):
         constructor_source = inspect.getsource(pokemon_class.__init__)
@@ -241,6 +241,8 @@ class TestPokemonTypes(unittest.TestCase):
             PokemonGrassType), "Le constructeur de PokemonGrassType doit être sur une seule ligne")
 
     def test_get_attack_multiplier_fire(self):
+        self.pokemon_fire = self._pokemon_type_mock_generator(PokemonFireType, Stubs.CHARMANDER.NAME, Stubs.CHARMANDER.ATTACK,
+                                                              Stubs.CHARMANDER.DEFENSE, False)
         self.assertEqual(self.pokemon_fire.get_attack_multiplier(
             PokemonType.FIRE), 1.0)
         self.assertEqual(self.pokemon_fire.get_attack_multiplier(
@@ -249,6 +251,9 @@ class TestPokemonTypes(unittest.TestCase):
             PokemonType.GRASS), 1.25)
 
     def test_get_attack_multiplier_water(self):
+        self.pokemon_water = self._pokemon_type_mock_generator(PokemonWaterType, Stubs.SQUIRTLE.NAME, Stubs.SQUIRTLE.ATTACK,
+                                                               Stubs.SQUIRTLE.DEFENSE, False)
+
         self.assertEqual(self.pokemon_water.get_attack_multiplier(
             PokemonType.FIRE), 1.25)
         self.assertEqual(self.pokemon_water.get_attack_multiplier(
@@ -257,6 +262,8 @@ class TestPokemonTypes(unittest.TestCase):
             PokemonType.GRASS), 0.75)
 
     def test_get_attack_multiplier_grass(self):
+        self.pokemon_grass = self._pokemon_type_mock_generator(PokemonGrassType, Stubs.BULBASAUR.NAME, Stubs.BULBASAUR.ATTACK,
+                                                               Stubs.BULBASAUR.DEFENSE, False)
         self.assertEqual(self.pokemon_grass.get_attack_multiplier(
             PokemonType.FIRE), 0.75)
         self.assertEqual(self.pokemon_grass.get_attack_multiplier(
@@ -270,8 +277,10 @@ class TestPokemonTypes(unittest.TestCase):
         self.assertEqual(pokemon.defense, stub.DEFENSE)
         self.assertEqual(pokemon.type, stub.TYPE)
 
-    def _pokemon_type_mock_generator(self, type_class, name: str, attack: int, defense: int):
-        class PokemonTypeMock(ConcreteTypePokemonImpl, type_class):
+    def _pokemon_type_mock_generator(self, type_class, name: str, attack: int, defense: int, with_get_attack_multiplier: bool = True):
+        base_class = ConcreteBasePokemonImpl if with_get_attack_multiplier else ConcreteTypePokemonImpl
+
+        class PokemonTypeMock(base_class, type_class):
             def __init__(self, name: str, attack: int, defense: int) -> None:
                 super().__init__(name, attack, defense)
 
@@ -288,12 +297,6 @@ class TestPokemonTypes(unittest.TestCase):
 
 
 class TestConcretePokemons(unittest.TestCase):
-
-    def setUp(self):
-        self.squirtle = Squirtle()
-        self.charmander = Charmander()
-        self.bulbasaur = Bulbasaur()
-
     def test_squirtle_inheritance(self):
         self.assertTrue(issubclass(Squirtle, PokemonWaterType))
 
@@ -304,32 +307,41 @@ class TestConcretePokemons(unittest.TestCase):
         self.assertTrue(issubclass(Bulbasaur, PokemonGrassType))
 
     def test_squirtle_constructor(self):
+        self._manual_set_up_squirtle()
         self._test_constructor(self.squirtle, Stubs.SQUIRTLE, Squirtle)
 
     def test_charmander_constructor(self):
+        self._manual_set_up_charmander()
         self._test_constructor(self.charmander, Stubs.CHARMANDER, Charmander)
 
     def test_bulbasaur_constructor(self):
+        self._manual_set_up_bulbasaur()
         self._test_constructor(self.bulbasaur, Stubs.BULBASAUR, Bulbasaur)
 
     def test_squirtle_evolve(self):
+        self._manual_set_up_squirtle()
         self._test_evolve(self.squirtle, Stubs.WARTORTLE)
 
     def test_charmander_evolve(self):
+        self._manual_set_up_charmander()
         self._test_evolve(self.charmander, Stubs.CHARMELEON)
 
     def test_bulbasaur_evolve(self):
+        self._manual_set_up_bulbasaur()
         self._test_evolve(self.bulbasaur, Stubs.IVYSAUR)
 
     def test_squirtle_get_signature_sound(self):
+        self._manual_set_up_squirtle()
         self.assertEqual(self.squirtle.get_signature_sound(),
                          "Squirtle-squirtle")
 
     def test_charmander_get_signature_sound(self):
+        self._manual_set_up_charmander()
         self.assertEqual(self.charmander.get_signature_sound(),
                          "Char-char")
 
     def test_bulbasaur_get_signature_sound(self):
+        self._manual_set_up_bulbasaur()
         self.assertEqual(self.bulbasaur.get_signature_sound(),
                          "Bulba-bulba")
 
@@ -346,6 +358,31 @@ class TestConcretePokemons(unittest.TestCase):
         self.assertEqual(pokemon.type, stub.TYPE)
         self.assertTrue(TestUtils.is_constructor_one_liner(
             pokemon_class), f"Le constructeur de {pokemon_class.__name__} doit être sur une seule ligne")
+
+    def _generate_mock_pokemon(self, pokemon_class):
+        class MockConcretePokemon(ConcreteTypePokemonImpl, pokemon_class):
+            def __init__(self) -> None:
+                pokemon_class.__init__(self)
+
+            def evolve(self) -> None:
+                if hasattr(pokemon_class, "evolve"):
+                    pokemon_class.evolve(self)
+
+            def get_signature_sound(self) -> str:
+                if hasattr(pokemon_class, "get_signature_sound"):
+                    return pokemon_class.get_signature_sound(self)
+                return "No sound"
+
+        return MockConcretePokemon()
+
+    def _manual_set_up_squirtle(self):
+        self.squirtle = self._generate_mock_pokemon(Squirtle)
+
+    def _manual_set_up_charmander(self):
+        self.charmander = self._generate_mock_pokemon(Charmander)
+
+    def _manual_set_up_bulbasaur(self):
+        self.bulbasaur = self._generate_mock_pokemon(Bulbasaur)
 
 
 if __name__ == '__main__':

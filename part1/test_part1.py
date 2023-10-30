@@ -30,18 +30,17 @@ class TestPokedexAnalysis(unittest.TestCase):
     columns_to_keep = ["name", "type1", "type2", "attack", "defense", "sp_attack", "sp_defense", "hp", "speed",
                        "generation", "is_legendary"]
 
-    # before each get df from notebook
     def setUp(self):
         self.df = create_pokedex()
 
     def test_create_pokedex(self):
-        self.assertEqual(type(self.df), pd.DataFrame)
-        self.assertEqual(self.df.shape, (807, 41))
+        self.assertEqual(pd.DataFrame, type(self.df))
+        self.assertEqual((807, 41), self.df.shape)
 
     def test_filter_columns(self):
         filter_columns(self.df)
-        self.assertEqual(self.df.shape, (807, 11))
-        self.assertEqual(set(self.df.columns), set(self.columns_to_keep))
+        self.assertEqual((807, 11), self.df.shape)
+        self.assertEqual(set(self.columns_to_keep), set(self.df.columns))
 
     def test_rename_columns(self):
         columns = self.df.columns
@@ -50,7 +49,7 @@ class TestPokedexAnalysis(unittest.TestCase):
                        'Special Defense', 'HP', 'Speed', 'Generation', 'Legendary']
         expected_columns = set(columns) - \
             set(self.columns_to_keep) | set(new_columns)
-        self.assertEqual(set(self.df.columns), expected_columns)
+        self.assertEqual(expected_columns, set(self.df.columns))
 
     def test_clean_data(self):
         clean_data(self.df)
@@ -65,10 +64,9 @@ class TestPokedexAnalysis(unittest.TestCase):
             self.fail(
                 "Vous avez oublié de drop les lignes avec des valeurs manquantes")
 
-        self.assertEqual(self.df.shape, expected_shape)
+        self.assertEqual(expected_shape, self.df.shape)
 
-        self.assertEqual(self.df.index.tolist(),
-                         list(range(expected_shape[0])), "Vous avez oublié de reset l'index")
+        self.assertEqual(list(range(expected_shape[0])), self.df.index.tolist(), "Vous avez oublié de reset l'index")
 
     # Note: Ce test ne fonctionnera que si vous avez bien implémenté les fonctions précédentes,
     # vu que la modification du type des colonnes se base sur les noms des colonnes renommées
@@ -77,9 +75,9 @@ class TestPokedexAnalysis(unittest.TestCase):
         rename_columns(self.df)
         clean_data(self.df)
         correct_columns_types(self.df)
-        self.assertEqual(self.df['Generation'].dtype, int)
-        self.assertEqual(self.df["HP"].dtype, int)
-        self.assertEqual(self.df["Speed"].dtype, int)
+        self.assertEqual(int, self.df['Generation'].dtype)
+        self.assertEqual(int, self.df["HP"].dtype)
+        self.assertEqual(int, self.df["Speed"].dtype)
 
 
 if __name__ == '__main__':
