@@ -6,6 +6,7 @@ from pokemon_enums import PokemonType, PokemonState
 from pokemon_base import Pokemon
 from pokemon_types import PokemonFireType, PokemonWaterType, PokemonGrassType
 from pokemons import Squirtle, Charmander, Bulbasaur
+from pokemon_arena import PokemonArena
 from constants import MAX_HEALTH
 from testing_constants import Stubs
 
@@ -384,6 +385,25 @@ class TestConcretePokemons(unittest.TestCase):
     def _manual_set_up_bulbasaur(self):
         self.bulbasaur = self._generate_mock_pokemon(Bulbasaur)
 
+
+class TestPokemonArena(unittest.TestCase):
+
+    def setUp(self):
+        self.charmander = Charmander()
+        self.squirtle = Squirtle()
+
+    def test_attack_correct_damage(self):
+        health = self.squirtle.health
+        PokemonArena.attack(self.charmander, self.squirtle)
+        self.assertEqual(self.squirtle.health, health - 39)
+
+        health = self.charmander.health
+        PokemonArena.attack(self.squirtle, self.charmander)
+        self.assertEqual(self.charmander.health, health - 60)
+
+    def test_attack_return_value(self):
+        self.assertEqual(PokemonArena.attack(self.charmander, self.squirtle), 39)
+        self.assertEqual(PokemonArena.attack(self.squirtle, self.charmander), 60)
 
 if __name__ == '__main__':
     unittest.main()
