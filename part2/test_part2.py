@@ -112,14 +112,14 @@ class TestPokemonBase(unittest.TestCase):
         self.assertEqual(self.pokemon_base._Pokemon__attack, 200)
         self.pokemon_base.attack = -10
         self.assertEqual(self.pokemon_base._Pokemon__attack, 0,
-                         "L'attaque ne devrait pas ête modifiée si elle est négative")
+                         "L'attaque ne devrait jamais avoir une valeur négative")
 
     def test_defense_setter(self):
         self.pokemon_base.defense = 200
         self.assertEqual(self.pokemon_base._Pokemon__defense, 200)
         self.pokemon_base.defense = -10
         self.assertEqual(self.pokemon_base._Pokemon__defense, 0,
-                         "La défense ne devrait pas être modifiée si elle est négative")
+                         "La défense ne devrait jamais avoir une valeur négative")
 
     def test_state_setter(self):
         self.pokemon_base.state = PokemonState.FROZEN
@@ -134,7 +134,7 @@ class TestPokemonBase(unittest.TestCase):
         self.assertEqual(self.pokemon_base._Pokemon__state_counter, 5)
         self.pokemon_base.state_counter = -1
         self.assertEqual(self.pokemon_base._Pokemon__state_counter, 0,
-                         "Le compteur d'état ne devrait pas être modifié si il est négatif")
+                         "Le compteur d'état ne devrait jamais avoir une valeur négative")
 
     def test_decrement_state_counter(self):
         self.pokemon_base._Pokemon__state_counter = 5

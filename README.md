@@ -73,7 +73,7 @@ Une fois que vous avez gardé les colonnes nécessaires, il serait agréable de 
 Après avoir supprimé et renommé les colonnes, le prochain pas est de nettoyer les données pour éliminer toute irrégularité qui pourrait affecter nos analyses. Plus spécifiquement, votre tâche consiste à faire les choses suivantes :
 
 - Supprimer les lignes en double;
-- Supprimez toutes les lignes avec des valeurs NA dans les colonnes, à l'exception de la colonne "**Secondary Type**" où les valeurs NA sont acceptables (il est possible qu'un Pokémon n'ait qu'un seul type);
+- Supprimez toutes les lignes avec des valeurs NA dans les colonnes, à l'exception de la colonne "**Secondary Type**" où les valeurs NA sont acceptables (il est possible qu'un Pokémon n'ait qu'un seul type). Votre objectif ici est d'utiliser une approche programmative pour **sélectionner automatiquement les colonnes à inclure dans la méthode `dropna()`, plutôt que de les énumérer manuellement**. Pensez à une manière de sélectionner toutes les colonnes sauf "Secondary Type" pour l'application de dropna().
 - Après des suppressions de lignes, les index de votre DataFrame peuvent être en désordre. Réinitialisez-les pour avoir une séquence ordonnée.
 
 ![Q1.3](/assets/Q1.3.png)
@@ -215,10 +215,10 @@ Les propriétés en écriture permettent de modifier les attributs privés d'un 
 Voici la liste des setters à implémenter:
 
 - `name`: prend un nom en paramètre et assigne le nom à l'attribut `__name` seulement si le nom n'est pas une chaîne vide.
-- `attack`: prend une attaque en paramètre et assigne l'attaque à l'attribut `__attack` seulement si l'attaque est supérieure ou égale à 0.
-- `defense`: prend une défense en paramètre et assigne la défense à l'attribut `__defense` seulement si la défense est supérieure ou égale à 0.
+- `attack`: prend une attaque en paramètre et assigne l'attaque à l'attribut `__attack`. Si la valeur fournie est inférieure à 0, assignez 0. Cela assure que cet attribut ne prend jamais de valeurs négatives.
+- `defense`: prend une défense en paramètre et assigne la défense à l'attribut `__defense`. Si la valeur fournie est inférieure à 0, assignez 0.
 - `state`: prend un état en paramètre et assigne l'état à l'attribut `__state` seulement si l'état est un membre de l'énumération `PokemonState`.
-- `state_counter`: prend un compteur d'état en paramètre et assigne le compteur d'état à l'attribut `__state_counter` seulement si la valeur est supérieure ou égale à 0.
+- `state_counter`: prend un compteur d'état en paramètre et assigne le compteur d'état à l'attribut `__state_counter`. Si la valeur fournie est inférieure à 0, assignez 0.
 
 #### 2.1.5 Méthodes abstraites
 
